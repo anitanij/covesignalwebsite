@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real Estate Data & Analytics Advisory</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --forest:   #1a2e1e;
+  --forest-mid: #243829;
+  --forest-light: #2f4a35;
+  --sage:     #5a7a5e;
+  --sage-light: #8aaa8e;
+  --parchment: #f4f0e8;
+  --parchment-dark: #ebe5d8;
+  --cream:    #faf8f3;
+  --copper:   #c4762a;
+  --copper-light: #d9924a;
+  --ink:      #1a1a17;
+  --body:     #3d3d38;
+  --muted:    #7a7a72;
+  --rule:     #ddd8cc;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  overflow-x: hidden;
+}
+
+/* ── HERO ─────────────────────────────────────────────── */
+.hero {
+  background: var(--forest);
+  padding: 0;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle grid texture */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+.hero-topbar {
+  padding: 32px 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  position: relative;
+}
+
+.logo-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  letter-spacing: 0.5px;
+}
+
+.logo-mark span { color: var(--copper-light); }
+
+.hero-tag {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--sage-light);
+}
+
+.hero-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 64px;
+  position: relative;
+}
+
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: slideIn 0.7s ease 0.3s forwards;
+}
+.kicker-line { width: 40px; height: 1px; background: var(--copper); }
+.kicker-text {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--copper-light);
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(44px, 5.5vw, 80px);
+  font-weight: 400;
+  line-height: 1.08;
+  color: #fff;
+  max-width: 780px;
+  opacity: 0;
+  animation: slideIn 0.7s ease 0.5s forwards;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--copper-light);
+}
+
+.hero-sub {
+  margin-top: 28px;
+  font-size: 16px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.55);
+  max-width: 520px;
+  line-height: 1.8;
+  opacity: 0;
+  animation: slideIn 0.7s ease 0.7s forwards;
+}
+
+.hero-actions {
+  margin-top: 52px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  opacity: 0;
+  animation: slideIn 0.7s ease 0.9s forwards;
+}
+
+.btn-cta {
+  display: inline-block;
+  padding: 15px 40px;
+  background: var(--copper);
+  color: #fff;
+  font-family: 'Jost', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-cta:hover { background: var(--copper-light); transform: translateY(-2px); }
+
+.btn-link {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.btn-link:hover { color: var(--copper-light); border-color: var(--copper-light); }
+
+.hero-footer {
+  padding: 32px 64px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  gap: 64px;
+  opacity: 0;
+  animation: fadeIn 1s ease 1.3s forwards;
+}
+
+.hero-stat {}
+.hero-stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--copper-light);
+  line-height: 1;
+}
+.hero-stat-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-top: 6px;
+}
+
+/* ── SECTION SHELL ────────────────────────────────────── */
+.section { padding: 96px 64px; }
+
+.eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 14px;
+}
+
+.section-h {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 3.5vw, 48px);
+  font-weight: 400;
+  line-height: 1.12;
+  color: var(--forest);
+  max-width: 600px;
+  margin-bottom: 56px;
+}
+
+.section-h em { font-style: italic; color: var(--sage); }
+
+/* ── WHO THIS IS FOR ──────────────────────────────────── */
+.who { background: var(--parchment); }
+
+.who-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+}
+
+.who-card {
+  background: var(--cream);
+  padding: 36px 32px;
+  transition: background 0.25s;
+}
+.who-card:hover { background: #fff; }
+
+.who-icon {
+  width: 28px; height: 28px;
+  margin-bottom: 18px;
+  opacity: 0.6;
+}
+
+.who-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--forest);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.who-card p {
+  font-size: 13.5px;
+  color: var(--body);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ── DIAGNOSTIC FEATURED ──────────────────────────────── */
+.diagnostic {
+  background: var(--forest);
+  position: relative;
+  overflow: hidden;
+}
+
+.diagnostic::after {
+  content: '';
+  position: absolute;
+  right: -100px; top: -100px;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.04);
+  pointer-events: none;
+}
+
+.diagnostic .eyebrow { color: var(--copper-light); }
+.diagnostic .section-h { color: #fff; max-width: 560px; }
+.diagnostic .section-h em { color: var(--copper-light); }
+
+.diag-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.diag-steps { display: flex; flex-direction: column; gap: 0; }
+
+.diag-step {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  padding: 28px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  gap: 20px;
+}
+.diag-step:last-child { border-bottom: none; }
+
+.diag-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--copper);
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.diag-step h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 10px;
+}
+
+.diag-step ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.diag-step ul li {
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 300;
+  padding-left: 14px;
+  position: relative;
+  line-height: 1.5;
+}
+.diag-step ul li::before {
+  content: '—';
+  position: absolute; left: 0;
+  color: var(--copper);
+  font-size: 10px;
+  top: 3px;
+}
+
+.diag-deliverables {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 40px;
+}
+
+.deliv-heading {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--copper-light);
+  margin-bottom: 28px;
+}
+
+.deliv-list { display: flex; flex-direction: column; gap: 16px; }
+
+.deliv-item {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.deliv-dot {
+  width: 5px; height: 5px;
+  background: var(--copper);
+  border-radius: 50%;
+  margin-top: 7px;
+  flex-shrink: 0;
+}
+
+.deliv-item span {
+  font-size: 14px;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.55;
+  font-weight: 300;
+}
+
+.deliv-cta {
+  margin-top: 40px;
+  display: inline-block;
+  padding: 14px 36px;
+  background: var(--copper);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+.deliv-cta:hover { background: var(--copper-light); transform: translateY(-2px); }
+
+/* ── CORE SERVICES ────────────────────────────────────── */
+.services { background: var(--cream); }
+
+.tiers { display: flex; flex-direction: column; gap: 64px; }
+
+.tier {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 48px;
+  padding-left: 32px;
+  border-left: 2px solid var(--copper);
+}
+
+.tier-meta {}
+
+.tier-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 60px;
+  font-weight: 400;
+  color: var(--rule);
+  line-height: 0.9;
+  margin-bottom: 12px;
+}
+
+.tier-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 8px;
+}
+
+.tier-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--forest);
+  line-height: 1.25;
+  margin-bottom: 12px;
+}
+
+.tier-desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+  font-style: italic;
+}
+
+.tier-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+.tier-item {
+  padding: 22px 24px;
+  background: var(--parchment);
+  border: 1px solid var(--rule);
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+.tier-item:hover {
+  border-color: var(--copper);
+  background: var(--cream);
+  transform: translateY(-2px);
+}
+
+.tier-item-rule { width: 24px; height: 2px; background: var(--copper); margin-bottom: 12px; }
+
+.tier-item p {
+  font-size: 13px;
+  color: var(--body);
+  line-height: 1.55;
+  font-weight: 400;
+}
+
+/* ── ENGAGEMENT MODELS ────────────────────────────────── */
+.engagements { background: var(--parchment-dark); }
+
+.eng-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--rule);
+}
+
+.eng-card {
+  background: var(--parchment);
+  padding: 44px 36px;
+  border-top: 3px solid transparent;
+  transition: border-top-color 0.25s, background 0.25s;
+}
+.eng-card:hover { border-top-color: var(--copper); background: var(--cream); }
+
+.eng-duration {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 16px;
+}
+
+.eng-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--forest);
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.eng-card p {
+  font-size: 13.5px;
+  color: var(--body);
+  line-height: 1.7;
+  font-weight: 300;
+  margin-bottom: 20px;
+}
+
+.eng-ideal {
+  font-size: 12px;
+  color: var(--sage);
+  line-height: 1.5;
+  padding-top: 20px;
+  border-top: 1px solid var(--rule);
+  font-style: italic;
+}
+
+/* ── TECH + ABOUT ─────────────────────────────────────── */
+.tech-about {
+  background: var(--cream);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.tech-col {
+  padding: 80px 64px;
+  border-right: 1px solid var(--rule);
+}
+
+.about-col { padding: 80px 64px; }
+
+.tech-group { margin-bottom: 36px; }
+.tech-group:last-child { margin-bottom: 0; }
+
+.tech-group-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.tech-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.tech-pill {
+  padding: 7px 14px;
+  background: var(--parchment);
+  border: 1px solid var(--rule);
+  font-size: 12.5px;
+  color: var(--body);
+  transition: border-color 0.2s;
+}
+.tech-pill:hover { border-color: var(--copper); }
+
+.about-list { display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }
+
+.about-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.about-rule { width: 16px; height: 1px; background: var(--copper); margin-top: 9px; flex-shrink: 0; }
+
+.about-item span {
+  font-size: 14px;
+  color: var(--body);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* ── CTA ──────────────────────────────────────────────── */
+.cta {
+  background: var(--forest);
+  padding: 100px 64px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 0;
+  transform: translateX(-50%);
+  width: 1px; height: 60px;
+  background: linear-gradient(var(--copper), transparent);
+}
+
+.cta h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(30px, 4vw, 52px);
+  font-weight: 400;
+  color: #fff;
+  max-width: 640px;
+  margin: 0 auto 20px;
+  line-height: 1.2;
+}
+
+.cta p {
+  font-size: 15px;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 48px;
+  font-weight: 300;
+}
+
+.cta-email {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-style: italic;
+  color: var(--copper-light);
+  text-decoration: none;
+  margin-bottom: 36px;
+  transition: color 0.2s;
+}
+.cta-email:hover { color: #fff; }
+
+/* ── FOOTER ───────────────────────────────────────────── */
+footer {
+  background: var(--forest-mid);
+  padding: 28px 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.footer-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+}
+
+.footer-brand span { color: var(--copper-light); }
+
+.footer-sub {
+  font-size: 11px;
+  color: rgba(255,255,255,0.25);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* ── ANIMATIONS ───────────────────────────────────────── */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .tier-items { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 860px) {
+  .section { padding: 72px 32px; }
+  .hero-body { padding: 60px 32px; }
+  .hero-topbar, .hero-footer { padding: 28px 32px; }
+  .hero-footer { flex-wrap: wrap; gap: 32px; }
+  .who-grid { grid-template-columns: 1fr 1fr; }
+  .diag-layout { grid-template-columns: 1fr; gap: 40px; }
+  .tier { grid-template-columns: 1fr; }
+  .tier-items { grid-template-columns: 1fr; }
+  .eng-grid { grid-template-columns: 1fr; }
+  .tech-about { grid-template-columns: 1fr; }
+  .tech-col { border-right: none; border-bottom: 1px solid var(--rule); padding: 60px 32px; }
+  .about-col { padding: 60px 32px; }
+  footer { flex-direction: column; gap: 8px; text-align: center; }
+  .cta { padding: 80px 32px; }
+}
+
+@media (max-width: 600px) {
+  .who-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-topbar">
+    <div class="logo-mark">Real Estate Data &amp; Analytics<span> Advisory</span></div>
+  </div>
+  <div class="hero-body">
+    <div class="hero-kicker">
+      <div class="kicker-line"></div>
+      <div class="kicker-text">Institutional-Grade Data Clarity</div>
+    </div>
+    <h1>Trust your numbers.<br><em>Scale with confidence.</em></h1>
+    <p class="hero-sub">Strategic analytics, portfolio performance reporting, and data governance — purpose-built for growing real estate investment firms.</p>
+    <div class="hero-actions">
+      <a href="https://calendly.com/anita-covesignal/30min" class="btn-cta">Book a Discovery Call</a>
+      <a href="#services" class="btn-link">View Services</a>
+    </div>
+  </div>
+</header>
+
+<!-- WHO THIS IS FOR -->
+<section class="section who">
+  <div class="eyebrow">Who This Is For</div>
+  <h2 class="section-h">Does this sound <em>familiar?</em></h2>
+  <div class="who-grid">
+    <div class="who-card">
+      <svg class="who-icon" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="6" width="22" height="16" rx="1" stroke="#5a7a5e" stroke-width="1.5"/><path d="M8 14h12M8 18h7" stroke="#5a7a5e" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <h3>Your numbers don't fully reconcile</h3>
+      <p>Property management reports, accounting statements, and investor updates tell slightly different stories — and reconciling them costs hours every month.</p>
+    </div>
+    <div class="who-card">
+      <svg class="who-icon" viewBox="0 0 28 28" fill="none"><path d="M6 22l5-6 4 3 5-8 4 4" stroke="#5a7a5e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <h3>You have reports — but not decision clarity</h3>
+      <p>You can see occupancy, NOI, and cash flow. But translating those numbers into confident investment decisions is harder than it should be.</p>
+    </div>
+    <div class="who-card">
+      <svg class="who-icon" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="9" stroke="#5a7a5e" stroke-width="1.5"/><path d="M14 9v5l3 3" stroke="#5a7a5e" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <h3>Investor reporting feels stressful</h3>
+      <p>LPs ask smart questions. Pulling accurate, consistent answers takes too much manual effort — and carries more risk than it should.</p>
+    </div>
+    <div class="who-card">
+      <svg class="who-icon" viewBox="0 0 28 28" fill="none"><rect x="4" y="4" width="9" height="9" rx="1" stroke="#5a7a5e" stroke-width="1.5"/><rect x="15" y="4" width="9" height="9" rx="1" stroke="#5a7a5e" stroke-width="1.5"/><rect x="4" y="15" width="9" height="9" rx="1" stroke="#5a7a5e" stroke-width="1.5"/><rect x="15" y="15" width="9" height="9" rx="1" stroke="#5a7a5e" stroke-width="1.5"/></svg>
+      <h3>Scaling has outpaced your data foundation</h3>
+      <p>More properties, more entities, more vendors — but the systems and processes tracking it all haven't kept pace with your growth.</p>
+    </div>
+    <div class="who-card">
+      <svg class="who-icon" viewBox="0 0 28 28" fill="none"><path d="M5 8h18M5 13h12M5 18h8" stroke="#5a7a5e" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <h3>Critical insights live in spreadsheets</h3>
+      <p>Portfolio performance, waterfall calculations, and capital tracking are scattered across Excel files instead of a trustworthy, structured system.</p>
+    </div>
+    <div class="who-card">
+      <svg class="who-icon" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="10" r="4" stroke="#5a7a5e" stroke-width="1.5"/><path d="M6 24c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="#5a7a5e" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <h3>You have KPIs — but no "so what"</h3>
+      <p>The metrics are tracked and the numbers look fine. But the business still feels opaque. What's missing is the story behind the data — and what to do next.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DIAGNOSTIC -->
+<section class="section diagnostic" id="diagnostic">
+  <div class="eyebrow">Featured Engagement · Portfolio Data &amp; Performance Diagnostic</div>
+  <h2 class="section-h">Not sure where your data<br><em>is breaking down?</em></h2>
+  <div class="diag-layout">
+    <div class="diag-steps">
+      <div class="diag-step">
+        <div class="diag-num">01</div>
+        <div>
+          <h4>Current State Review</h4>
+          <ul>
+            <li>Property management systems</li>
+            <li>Accounting structure &amp; chart of accounts</li>
+            <li>Existing reports &amp; KPIs</li>
+            <li>Data flows between tools</li>
+          </ul>
+        </div>
+      </div>
+      <div class="diag-step">
+        <div class="diag-num">02</div>
+        <div>
+          <h4>Risk &amp; Data Integrity Analysis</h4>
+          <ul>
+            <li>Reconciliation gaps</li>
+            <li>KPI definition inconsistencies</li>
+            <li>Governance &amp; control risks</li>
+            <li>Reporting bottlenecks</li>
+          </ul>
+        </div>
+      </div>
+      <div class="diag-step">
+        <div class="diag-num">03</div>
+        <div>
+          <h4>Prioritized Action Plan</h4>
+          <ul>
+            <li>Clear written findings</li>
+            <li>Quick-win recommendations</li>
+            <li>90-day improvement roadmap</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="diag-deliverables">
+      <div class="deliv-heading">What you walk away with</div>
+      <div class="deliv-list">
+        <div class="deliv-item"><div class="deliv-dot"></div><span>Written Portfolio Data Health Assessment</span></div>
+        <div class="deliv-item"><div class="deliv-dot"></div><span>Identified reporting &amp; reconciliation risks</span></div>
+        <div class="deliv-item"><div class="deliv-dot"></div><span>KPI alignment recommendations</span></div>
+        <div class="deliv-item"><div class="deliv-dot"></div><span>Governance &amp; controls gap analysis</span></div>
+        <div class="deliv-item"><div class="deliv-dot"></div><span>Practical 90-day implementation roadmap</span></div>
+      </div>
+      <a href="mailto:hello@yourdomain.com" class="deliv-cta">Start with a Diagnostic</a>
+    </div>
+  </div>
+</section>
+
+<!-- CORE SERVICES -->
+<section class="section services" id="services">
+  <div class="eyebrow">Core Services</div>
+  <h2 class="section-h">Three tiers. One clear path forward.</h2>
+  <div class="tiers">
+
+    <div class="tier">
+      <div class="tier-meta">
+        <div class="tier-num">01</div>
+        <div class="tier-label">Data Foundation</div>
+        <div class="tier-title">Data Foundation &amp; Governance</div>
+        <div class="tier-desc">Stabilize your reporting before scaling further.</div>
+      </div>
+      <div class="tier-items">
+        <div class="tier-item"><div class="tier-item-rule"></div><p>KPI &amp; metric standardization (NOI, cash flow, return metrics)</p></div>
+        <div class="tier-item"><div class="tier-item-rule"></div><p>Chart of accounts &amp; automated reporting</p></div>
+        <div class="tier-item"><div class="tier-item-rule"></div><p>Data definitions &amp; documentation</p></div>
+        <div class="tier-item"><div class="tier-item-rule"></div><p>Access controls &amp; data responsibility mapping</p></div>
+        <div class="tier-item"><div class="tier-item-rule"></div><p>Data quality &amp; trust audits</p></div>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tier-meta">
+        <div class="tier-num">02</div>
+        <div class="tier-label">Portfolio Analytics</div>
+        <div class="tier-title">Portfolio Performance Analytics</div>
+        <div class="tier-desc">Turn data into confident investment decisions.</div>
+      </div>
+      <div class="tier-items">
+        <div class="tier-item"><div class="tier-item-rule"></div><p>Portfolio performance dashboards</p></div>
+        <div class="tier-item"><div class="tier-item-rule"></div><p>Property-level profitability analysis</p></div>
+        <div class="tier-item"><div class="tier-item-rule"></div><p>Vacancy &amp; revenue trend analysis</p></div>
+        <div class="tier-item"><div class="tier-item-rule"></div><p>CapEx tracking &amp; ROI visibility</p></div>
+        <div class="tier-item"><div class="tier-item-rule"></div><p>Cash flow &amp; distribution reporting</p></div>
+        <div class="tier-item"><div class="tier-item-rule"></div><p>Identify &amp; plug leaks to increase ROI</p></div>
+      </div>
+    </div>
+
+    <div class="tier">
+      <div class="tier-meta">
+        <div class="tier-num">03</div>
+        <div class="tier-label">Investor Reporting</div>
+        <div class="tier-title">Investor &amp; Partner Reporting</div>
+        <div class="tier-desc">Deliver credible, LP-ready insights.</div>
+      </div>
+      <div class="tier-items">
+        <div class="tier-item"><div class="tier-item-rule"></div><p>Standardized investor reporting packages</p></div>
+        <div class="tier-item"><div class="tier-item-rule"></div><p>Automated performance summaries</p></div>
+        <div class="tier-item"><div class="tier-item-rule"></div><p>Variance &amp; trend explanations</p></div>
+        <div class="tier-item"><div class="tier-item-rule"></div><p>Data-backed portfolio narratives</p></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ENGAGEMENT MODELS -->
+<section class="section engagements">
+  <div class="eyebrow">Engagement Models</div>
+  <h2 class="section-h">Three ways to get started.</h2>
+  <div class="eng-grid">
+    <div class="eng-card">
+      <div class="eng-duration">3 – 4 Weeks · Diagnostic</div>
+      <h3>Portfolio Data Diagnostic</h3>
+      <p>Focused assessment of your current reporting state, data integrity risks, and improvement opportunities — delivered as a written findings report and roadmap.</p>
+      <div class="eng-ideal">Ideal for firms experiencing reporting confusion but struggling to pinpoint root causes, experiencing scaling friction, or increased investor scrutiny.</div>
+    </div>
+    <div class="eng-card">
+      <div class="eng-duration">Project-Based · Implementation</div>
+      <h3>Data Foundation &amp; Analytics Setup</h3>
+      <p>Hands-on implementation of governance frameworks, KPI standardization, and portfolio performance reporting — built to your firm's specific structure.</p>
+      <div class="eng-ideal">Ideal for firms upgrading systems, professionalizing reporting, or preparing for growth.</div>
+    </div>
+    <div class="eng-card">
+      <div class="eng-duration">Ongoing Retainer · Advisory</div>
+      <h3>Portfolio Analytics Advisory</h3>
+      <p>Monthly strategic analytics and reporting support — executive-level oversight of your data, KPIs, and investor communications without a full-time hire.</p>
+      <div class="eng-ideal">Ideal for firms that want senior analytics leadership on an ongoing, flexible basis.</div>
+    </div>
+  </div>
+</section>
+<section class="tech">
+<!-- TECH + ABOUT -->
+<div class="tech-about">
+  <div class="tech-col">
+    <div class="eyebrow">Technology</div>
+    <h2 class="section-h" style="font-size:clamp(24px,2.5vw,36px); margin-bottom:36px;">Works with your existing stack.</h2>
+    <div class="tech-group">
+      <div class="tech-group-label">Property &amp; Accounting Systems</div>
+      <div class="tech-pills">
+        <span class="tech-pill">AppFolio</span>
+        <span class="tech-pill">Buildium</span>
+        <span class="tech-pill">Yardi</span>
+        <span class="tech-pill">QuickBooks</span>
+        <span class="tech-pill">Others</span>
+      </div>
+    </div>
+    <div class="tech-group">
+      <div class="tech-group-label">Analytics &amp; Visualization</div>
+      <div class="tech-pills">
+        <span class="tech-pill">Power BI</span>
+        <span class="tech-pill">Tableau</span>
+        <span class="tech-pill">Excel</span>
+        <span class="tech-pill">Custom Dashboards</span>
+      </div>
+    </div>
+  </div>
+  </section>
+<!-- CTA -->
+<section class="cta">
+  <h2>Ready to trust your numbers<br>and scale with confidence?</h2>
+  <p>Let's start with a short discovery conversation — no obligation, no jargon.</p>
+  <a href="mailto:anita@covesignal.com" class="cta-email">anita@covesignal.com</a>
+  <a href="https://calendly.com/anita-covesignal/30min" class="btn-cta">Book a Free Discovery Call</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">Real Estate Data &amp; Analytics<span> Advisory</span></div>
+  <div class="footer-sub">Portfolio Analytics · Data Governance · Investor Reporting</div>
+</footer>
+
+</body>
+</html>
